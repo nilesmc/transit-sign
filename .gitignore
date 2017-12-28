@@ -41,3 +41,4 @@ microblog.log*
 .env
 
 .yml
+.DS_Store
