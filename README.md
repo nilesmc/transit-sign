@@ -8,7 +8,9 @@ I'll be using Python, Flask, and my Raspberry Pi.
 
 to start the application
 
-# create an env
+# python3 -m venv venv
+# virtualenv -p python3
+# source venv/bin/activate
 # pip install -r requirements.txt
 # export FLASK_APP=lcd-transit-sign.py
 # run flask
