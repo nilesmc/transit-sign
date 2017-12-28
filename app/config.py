@@ -22,7 +22,7 @@ class StagingConfig(Config):
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/dev_lcd-transit-sign'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/dev_lcd-transit-sign'
 
 class TestingConfig(Config):
     TESTING = True
