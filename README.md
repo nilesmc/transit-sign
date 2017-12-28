@@ -8,7 +8,7 @@ I'll be using Python, Flask, and my Raspberry Pi.
 
 to start the application
 
-install pip packages
-export FLASK_APP=lcd-transit-sign.py
-run flask
-
+# create an env
+# pip install -r requirements.txt
+# export FLASK_APP=lcd-transit-sign.py
+# run flask
