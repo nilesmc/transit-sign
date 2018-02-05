@@ -1,8 +1,7 @@
 from app import app, db
 from app.models import User, Stop
-
-# tri_met_service
+from app.lib import TriMetService as TMS
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'User': User, 'Stops': Stop }
+    return {'db': db, 'User': User, 'Stops': Stop, 'TMS': TMS }
