@@ -1,8 +1,17 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
     <h1>Hi, {{ current_user.username }}!</h1>
     {% for stop in current_user.stops %}
-    <div><p>{{ stop.stop_id }}</p></div>
+      <div><p>{{ stop.stop_id }}</p></div>
+    {% endfor %}
+
+    {% if form %}
+       {{ wtf.quick_form(form) }}
+    {% endif %}
+
+    {% for address in current_user.addresses %}
+      <div><p>{{ address.street_address }}</p></div>
     {% endfor %}
 {% endblock %}

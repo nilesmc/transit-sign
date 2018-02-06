@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, IntegerField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, DataRequired
 from app.models import User
 
@@ -40,3 +40,15 @@ class EditProfileForm(FlaskForm):
             user = User.query.filter_by(username=self.username.data).first()
             if user is not None:
                 raise ValidationError('Please use a different username, last one is taken.')
+
+class StopForm(FlaskForm):
+    stop = IntegerField(validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class AddressForm(FlaskForm):
+    active = BooleanField(True, validators=[DataRequired()])
+    street_address = StringField('', validators=[DataRequired()])
+    city = StringField('', validators=[DataRequired()])
+    state = StringField('', validators=[DataRequired()])
+    zip_code = StringField('', validators=[DataRequired()])
+    submit = SubmitField('Submit')
