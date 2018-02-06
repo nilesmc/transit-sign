@@ -52,6 +52,8 @@ class Address(db.Model):
     city = db.Column(db.String(256), index=True)
     state = db.String(2)
     zip_code = db.String(16)
+    latitude = db.Column(db.Float(Precision=64), primary_key=True)
+    longitude = db.Column(db.Float(Precision=64), primary_key=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
