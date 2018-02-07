@@ -1,4 +1,4 @@
-from app import app, db
+from app import app, db, cli
 from app.models import User, Stop
 from app.lib import TriMetService as TMS
 
