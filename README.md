@@ -18,3 +18,4 @@ To start the application:
 - flask run
 
 To run the tests:
+
