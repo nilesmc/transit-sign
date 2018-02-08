@@ -21,6 +21,7 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['mcgiver.niles@gmail.com']
+    GOOGLEMAPS_KEY = os.environ.get('GOOGLEMAPS_KEY')
 
 class ProductionConfig(Config):
     DEBUG = False

@@ -1,5 +1,5 @@
 import urllib, xmltodict
-from app import app
+# from app import app
 
 class TriMetService():
 

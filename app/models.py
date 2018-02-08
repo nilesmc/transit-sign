@@ -6,6 +6,7 @@ from hashlib import md5
 import jwt
 from time import time
 
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -72,6 +73,8 @@ class Address(db.Model):
     longitude = db.Column(db.Float(Precision=64), primary_key=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
 
     def __repr__(self):
         return '<Address {}>'.format(self.street_address)
