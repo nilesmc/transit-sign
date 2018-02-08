@@ -1,9 +1,18 @@
 {% extends "base.html" %}
-{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block app_content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
+{% block content %}
+    <div class="container">
+      <div class="jumbotron">
+        <img src="https://trimet.org/global/img/mode-bus.png" class="img-fluid" style="height: 66%;width: 66%"">
+        <div class="container">
+          <h1>Welcome to Transit∿</h1>
+          <p>Helping people connect with transit when leaving home. <a href="http://trimet.org/">TriMet</a> arrival times you can glance at on your way out the front door.</p>
+          <p>
+            <a class="btn btn-lg btn-default" role="button"
+               href="{{ url_for('register') }}"">Sign Up</a>
+          </p>
+        </div>
+      </div>
+    </div>
+   </div>
 {% endblock %}
-
-
-

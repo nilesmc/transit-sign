@@ -8,17 +8,22 @@ from datetime import datetime
 from app.email import send_password_reset_email
 from flask_googlemaps import GoogleMaps, Map
 
+# USER ROUTES #
 @app.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
-@login_required
+# No Login Required
+@app.route('/', methods=['GET'])
+@app.route('/index', methods=['GET'])
 def index():
     return render_template('index.html', title='Home')
+
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html', title='About')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -56,6 +61,8 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+
+# Login Required
 @app.route('/user/<username>')
 @login_required
 def user(username):
@@ -79,38 +86,6 @@ def edit_profile():
         form.username.data = current_user.username
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
-
-@app.route('/address', methods=['GET', 'POST'])
-@login_required
-def address_index():
-    form = AddressForm()
-    if form.validate_on_submit():
-        address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state= form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
-        db.session.add(address)
-        db.session.commit()
-        flash('Your address has been added!')
-        return redirect(url_for('index'))
-    return render_template('addresses_index.html', title='Addresses', form=form)
-
-@app.route('/address/<adddress_id>', methods=['GET', 'POST'])
-@login_required
-def edit_address():
-    form = AddressForm()
-    # look up address id from param, make sure it is in list of current user, feed it to the form
-    # form = AddressForm(address)
-    if form.validate_on_submit():
-        address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state= form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
-        db.session.add(address)
-        db.session.commit()
-        flash('Your address has been added!')
-        return redirect(url_for('index'))
-    return render_template('edit_addresses.html', title='Addresses', form=form)
-
-@app.route('/stops', methods=['GET', 'POST'])
-@login_required
-def stops_index():
-    return render_template('stops_index.html', title='Stops')
-
 # Password Management
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
@@ -140,3 +115,38 @@ def reset_password(token):
         flash('Your password has been reset.')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+# ADDRESS ROUTES #
+@app.route('/address', methods=['GET', 'POST'])
+@login_required
+def address_index():
+    form = AddressForm()
+    if form.validate_on_submit():
+        address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state= form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
+        db.session.add(address)
+        db.session.commit()
+        flash('Your address has been added!')
+        return redirect(url_for('index'))
+    return render_template('addresses_index.html', title='Addresses', form=form)
+
+@app.route('/address/<adddress_id>', methods=['GET', 'POST'])
+@login_required
+def edit_address():
+    form = AddressForm()
+    # look up address id from param, make sure it is in list of current user, feed it to the form
+    # form = AddressForm(address)
+    if form.validate_on_submit():
+        address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state= form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
+        db.session.add(address)
+        db.session.commit()
+        flash('Your address has been added!')
+        return redirect(url_for('index'))
+    return render_template('edit_addresses.html', title='Addresses', form=form)
+
+
+# STOP ROUTES #
+@app.route('/stops', methods=['GET', 'POST'])
+@login_required
+def stops_index():
+    return render_template('stops_index.html', title='Stops')
+

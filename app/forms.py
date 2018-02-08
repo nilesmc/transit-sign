@@ -53,6 +53,7 @@ class AddressForm(FlaskForm):
     zip_code = StringField('Zip Code', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
