@@ -3,18 +3,6 @@
 
 {% block app_content %}
     <h1>Hi, {{ current_user.username }}!</h1>
-
-    {% if form %}
-       {{ wtf.quick_form(form) }}
-    {% endif %}
-
-    {% for stop in current_user.stops %}
-        {% include '_stop.html' %}
-    {% endfor %}
-
-    {% for address in current_user.addresses %}
-      {% include '_address.html' %}
-    {% endfor %}
 {% endblock %}
 
 

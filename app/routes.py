@@ -18,14 +18,7 @@ def before_request():
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    form = AddressForm()
-    if form.validate_on_submit():
-        address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state= form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
-        db.session.add(address)
-        db.session.commit()
-        flash('Your address has been added!')
-        return redirect(url_for('index'))
-    return render_template('index.html', title='Home', form=form)
+    return render_template('index.html', title='Home')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -86,6 +79,37 @@ def edit_profile():
         form.username.data = current_user.username
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+
+@app.route('/address', methods=['GET', 'POST'])
+@login_required
+def address_index():
+    form = AddressForm()
+    if form.validate_on_submit():
+        address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state= form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
+        db.session.add(address)
+        db.session.commit()
+        flash('Your address has been added!')
+        return redirect(url_for('index'))
+    return render_template('addresses_index.html', title='Addresses', form=form)
+
+@app.route('/address/<adddress_id>', methods=['GET', 'POST'])
+@login_required
+def edit_address():
+    form = AddressForm()
+    # look up address id from param, make sure it is in list of current user, feed it to the form
+    # form = AddressForm(address)
+    if form.validate_on_submit():
+        address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state= form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
+        db.session.add(address)
+        db.session.commit()
+        flash('Your address has been added!')
+        return redirect(url_for('index'))
+    return render_template('edit_addresses.html', title='Addresses', form=form)
+
+@app.route('/stops', methods=['GET', 'POST'])
+@login_required
+def stops_index():
+    return render_template('stops_index.html', title='Stops')
 
 # Password Management
 @app.route('/reset_password_request', methods=['GET', 'POST'])

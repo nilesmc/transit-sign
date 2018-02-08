@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Add Address</h1>
+    {% if form %}
+       {{ wtf.quick_form(form) }}
+    {% endif %}
+
+    <h1>Current Address</h1>
+    {% for address in current_user.addresses %}
+      {% include '_address.html' %}
+    {% endfor %}
+{% endblock %}

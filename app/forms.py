@@ -46,11 +46,11 @@ class StopForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class AddressForm(FlaskForm):
-    active = BooleanField(True, validators=[DataRequired()])
-    street_address = StringField('', validators=[DataRequired()])
-    city = StringField('', validators=[DataRequired()])
-    state = StringField('', validators=[DataRequired()])
-    zip_code = StringField('', validators=[DataRequired()])
+    active = BooleanField("Active Address", validators=[DataRequired()])
+    street_address = StringField('Street Address', validators=[DataRequired()])
+    city = StringField('City', validators=[DataRequired()])
+    state = StringField('State', validators=[DataRequired()])
+    zip_code = StringField('Zip Code', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class ResetPasswordRequestForm(FlaskForm):

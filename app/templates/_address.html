@@ -1,9 +1,10 @@
-<table>
-    <tr valign="top">
-        <td width="70px">
-          <img src="https://placeholdit.co//i/70x70?">
-          {{googlemap("address_map", lat=45.5231, lng=-122.6765 )}}
-        </td>
-        <td>{{address.street_address}} - {{address.city}}, {{address.state}}, {{address.zip_code}}</td>
-    </tr>
-</table>
+<a href="{{ url_for('address.id') }}">
+  <table>
+      <tr valign="top">
+          <td width="300px">
+            {{googlemap("address_map", lat=45.5231, lng=-122.6765 )}}
+          </td>
+          <td>{{address.street_address}} - {{address.city}}, {{address.state}}, {{address.zip_code}}</td>
+      </tr>
+  </table>
+</a>

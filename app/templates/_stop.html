@@ -1,8 +1,7 @@
 <table  class="table table-hover">
     <tr>
-        <td width="70px">
-          <img src="https://placeholdit.co//i/70x70?">
-          Google Map Place Holder
+        <td width="300px">
+          {{googlemap("address_map", lat=45.5231, lng=-122.6765 )}}
         </td>
         <td>{{ stop['stop_id'] }} Next Arrival: <b>{{ stop['next_arrival_time'] }}</td>
     </tr>
