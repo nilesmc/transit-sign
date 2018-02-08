@@ -4,9 +4,9 @@ import urllib, xmltodict
 class TriMetService():
 
   def __init__(self, locations):
-    # muyst be list of locations
+    # must be list of locations
     self.locations = locations
-    self.tri_met_app_id = app.config.tri_me_app_id
+    self.tri_met_app_id = app.config['TRI_MET_APP_ID']
 
   def run(self):
     return self.request

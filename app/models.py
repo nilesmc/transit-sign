@@ -75,3 +75,8 @@ class Address(db.Model):
 
     def __repr__(self):
         return '<Address {}>'.format(self.street_address)
+
+    def map_location_param(self):
+        str = f"{self.street_address}, {self.city}, {self.state}"
+        str = str.replace(" ", "+")
+        return str
