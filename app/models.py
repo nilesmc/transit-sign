@@ -5,6 +5,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from hashlib import md5
 import jwt
 from time import time
+from .lib import GeoCodingService
+from sqlalchemy import event, and_
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -80,3 +82,22 @@ class Address(db.Model):
         str = f"{self.street_address}, {self.city}, {self.state}"
         str = str.replace(" ", "+")
         return str
+
+    def map_name_param(self):
+        str = f"map_{self.id}"
+        return str
+
+    def get_coordinates(self):
+        coordinates = GeoCodingService.GeoCodingService(self.map_location_param()).get_coordinates()
+        self.latitude = coordinates['latitude']
+        self.longitude = coordinates['longitude']
+
+    @staticmethod
+    def reset_users_active_addresses(mapper, connection, target):
+        if target.active:
+            db.session.query(Address).filter(and_(Address.user_id == target.user_id, Address.active == True)).update({"active": False })
+
+event.listen(Address, 'before_insert', Address.reset_users_active_addresses, retval=False)
+
+event.listen(Address, 'before_update', Address.reset_users_active_addresses, retval=False)
+

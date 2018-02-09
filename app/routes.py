@@ -122,8 +122,10 @@ def reset_password(token):
 def address_index():
     form = AddressForm()
     if form.validate_on_submit():
+        all_addresses = Address()
         address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state= form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
         db.session.add(address)
+        address.get_coordinates()
         db.session.commit()
         flash('Your address has been added!')
         return redirect(url_for('index'))

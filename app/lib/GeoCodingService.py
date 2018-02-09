@@ -6,10 +6,13 @@ class GeoCodingService():
   def __init__(self, location):
     # must be string with street, city, state, zip
     self.location = location
-    self.googlemaps_key = app.config['GOOGLEMAPS_KEY']
+    self.googlemaps_key = 'AIzaSyD5pNwbBpfiOLX5yV2PkwSmGjsqblR2KDw'
+    # self.googlemaps_key = app.config['GOOGLEMAPS_KEY']
 
   def get_coordinates(self):
-    return self.request()['results'][0]['geometry']['location']
+    raw_coordinates = self.request()['results'][0]['geometry']['location']
+    coordinates = { 'latitude': raw_coordinates['lat'], 'longitude': raw_coordinates['lng'] }
+    return coordinates
 
   def request(self):
     response = urllib.request.urlopen(self.request_url())

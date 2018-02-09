@@ -8,10 +8,11 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import Config
 from .lib import TriMetService as TMS
+from .lib import GeoCodingService
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_googlemaps import GoogleMaps
-import geocoder
+# import geocoder
 
 app = Flask(__name__)
 app.config.from_object(Config)

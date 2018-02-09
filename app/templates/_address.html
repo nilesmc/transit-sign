@@ -1,9 +1,11 @@
 <a href="{{ url_for('edit_address', adddress_id=address.id) }}">
   <table>
       <tr valign="top">
+          <td>{{  address.active}} </td>
           <td width="300px">
-            {{googlemap("address_map", lat=45.5231, lng=-122.6765 )}}
+            {{ googlemap(address.city, lat=address.latitude, lng=address.longitude,  markers=[(address.latitude, address.longitude)] )}}
           </td>
+          <td> {{ address.latitude }} - {{ address.longitude }}  </td>
           <td>{{address.street_address}} - {{address.city}}, {{address.state}}, {{address.zip_code}}</td>
       </tr>
   </table>
