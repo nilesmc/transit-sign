@@ -131,10 +131,11 @@ def address_index():
         return redirect(url_for('index'))
     return render_template('addresses_index.html', title='Addresses', form=form)
 
-@app.route('/address/<adddress_id>', methods=['GET', 'POST'])
+@app.route('/address/<address_id>', methods=['GET', 'POST'])
 @login_required
-def edit_address():
-    form = AddressForm()
+def edit_address(address_id):
+    address = db.session.query(Address).filter(Address.id == address_id)
+    form = AddressForm(address_id)
     # look up address id from param, make sure it is in list of current user, feed it to the form
     # form = AddressForm(address)
     if form.validate_on_submit():
@@ -143,7 +144,12 @@ def edit_address():
         db.session.commit()
         flash('Your address has been added!')
         return redirect(url_for('index'))
-    return render_template('edit_addresses.html', title='Addresses', form=form)
+    elif request.method == 'GET':
+        form.street_address.data = address.street_address
+        form.city.data = address.city
+        form.state.data = address.state
+        form.zip.data = address.zip
+    return render_template('edit_address.html', title='Edit Address', form=form)
 
 
 # STOP ROUTES #

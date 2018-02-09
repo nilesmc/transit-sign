@@ -53,6 +53,14 @@ class AddressForm(FlaskForm):
     zip_code = StringField('Zip Code', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class EditAddressForm(FlaskForm):
+    active = BooleanField("Active Address", validators=[DataRequired()])
+    street_address = StringField('Street Address', validators=[DataRequired()])
+    city = StringField('City', validators=[DataRequired()])
+    state = StringField('State', validators=[DataRequired()])
+    zip_code = StringField('Zip Code', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')

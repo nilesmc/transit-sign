@@ -54,6 +54,7 @@ class Stop(db.Model):
     stop_id = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    active = db.Column(db.Boolean, default=True)
     # - Lines
     # - Bus / Train
     # - Lat
