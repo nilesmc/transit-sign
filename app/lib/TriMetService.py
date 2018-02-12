@@ -1,5 +1,6 @@
 import urllib, xmltodict
 # from app import app
+from flask import current_app as app
 
 class TriMetService():
 

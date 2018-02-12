@@ -1,5 +1,5 @@
 import urllib.request, json
-# from app import app.config
+from flask import current_app as app
 
 class GeoCodingService():
 
