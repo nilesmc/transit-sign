@@ -1,8 +1,7 @@
 import urllib, xmltodict
-# from app import app
 from flask import current_app as app
 
-class TriMetService():
+class TriMetArrivalService():
 
   def __init__(self, locations):
     # must be list of locations
@@ -10,6 +9,7 @@ class TriMetService():
     self.tri_met_app_id = app.config['TRI_MET_APP_ID']
 
   def run(self):
+    # munge data into usable form here
     return self.request
 
   def request(self):

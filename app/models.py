@@ -36,10 +36,6 @@ class User(UserMixin, db.Model):
             {'reset_password': self.id, 'exp': time() + expires_in},
             app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
-    def index_addresses(self):
-        print('here')
-        db.session.query(Address).filter(Address.user_id == self.id).order_by(Address.timestamp.desc())
-
     @staticmethod
     def verify_reset_password_token(token):
         try:

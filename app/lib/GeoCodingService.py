@@ -21,8 +21,6 @@ class GeoCodingService():
     return data
 
   def request_url(self):
-    # https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
-
     google_root = "https://maps.googleapis.com/maps/api/geocode/json?"
     return google_root + self.location_string() + self.googlemaps_key_string()
 
