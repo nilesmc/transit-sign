@@ -6,7 +6,7 @@
             <td>{{  address.id}} </td>
             <td>{{  address.active}} </td>
             <td width="300px">
-              {{ googlemap(address.city, lat=address.latitude, lng=address.longitude,  markers=[(address.latitude, address.longitude)] )}}
+              {{ googlemap(address.map_name_param(), lat=address.latitude, lng=address.longitude,  markers=[(address.latitude, address.longitude)] )}}
             </td>
             <td> {{ address.latitude }} - {{ address.longitude }}  </td>
             <td>{{address.street_address}} - {{address.city}}, {{address.state}}, {{address.zip_code}}</td>

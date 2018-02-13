@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, IntegerField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, DataRequired
-from app.models import User
+from app.models import User, Address
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -60,6 +60,9 @@ class EditAddressForm(FlaskForm):
     state = StringField('State', validators=[DataRequired()])
     zip_code = StringField('Zip Code', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+    def __init__(self, *args, **kwargs):
+        super(EditAddressForm, self).__init__(*args, **kwargs)
 
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])

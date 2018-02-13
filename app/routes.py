@@ -121,34 +121,36 @@ def reset_password(token):
 @login_required
 def address_index():
     form = AddressForm()
+
     if form.validate_on_submit():
-        all_addresses = Address()
-        address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state= form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
+        address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state=form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
         db.session.add(address)
         address.get_coordinates()
         db.session.commit()
         flash('Your address has been added!')
-        return redirect(url_for('index'))
+        return redirect(url_for('address_index'))
     return render_template('addresses_index.html', title='Addresses', form=form)
 
 @app.route('/address/<address_id>', methods=['GET', 'POST'])
 @login_required
 def edit_address(address_id):
-    address = db.session.query(Address).filter(Address.id == address_id)
-    form = AddressForm(address_id)
-    # look up address id from param, make sure it is in list of current user, feed it to the form
-    # form = AddressForm(address)
+    address = db.session.query(Address).filter(Address.id == address_id).first()
+    form = AddressForm()
+
     if form.validate_on_submit():
-        address = Address(active=form.active.data, street_address=form.street_address.data, city=form.city.data, state= form.state.data, zip_code=form.zip_code.data, latitude=0,longitude=0, user=current_user)
-        db.session.add(address)
+        db.session.query(Address).filter(Address.id == address_id).update({Address.active: form.active.data, Address.street_address: form.street_address.data, Address.city: form.city.data, Address.state: form.state.data, Address.zip_code: form.zip_code.data})
+
+        address.get_coordinates()
         db.session.commit()
-        flash('Your address has been added!')
-        return redirect(url_for('index'))
+
+        flash('Your address has been updated!')
+        return redirect(url_for('address_index'))
     elif request.method == 'GET':
+        form.active.data = address.active
         form.street_address.data = address.street_address
         form.city.data = address.city
         form.state.data = address.state
-        form.zip.data = address.zip
+        form.zip_code.data = address.zip_code
     return render_template('edit_address.html', title='Edit Address', form=form)
 
 

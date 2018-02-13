@@ -6,6 +6,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
 from config import Config
 from .lib import TriMetService as TMS
 from .lib import GeoCodingService
@@ -17,6 +18,7 @@ from flask_googlemaps import GoogleMaps
 app = Flask(__name__)
 app.config.from_object(Config)
 bootstrap = Bootstrap(app)
+CSRFProtect(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)

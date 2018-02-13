@@ -6,7 +6,7 @@ from hashlib import md5
 import jwt
 from time import time
 from .lib import GeoCodingService
-from sqlalchemy import event, and_
+from sqlalchemy import event, and_, not_
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -14,7 +14,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     stops = db.relationship('Stop', backref='user', lazy='dynamic')
-    addresses = db.relationship('Address', backref='user', lazy='dynamic')
+    addresses = db.relationship('Address', backref='user', lazy='dynamic', order_by="desc(Address.active)")
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -35,6 +35,10 @@ class User(UserMixin, db.Model):
         return jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
             app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+    def index_addresses(self):
+        print('here')
+        db.session.query(Address).filter(Address.user_id == self.id).order_by(Address.timestamp.desc())
 
     @staticmethod
     def verify_reset_password_token(token):
@@ -95,8 +99,7 @@ class Address(db.Model):
 
     @staticmethod
     def reset_users_active_addresses(mapper, connection, target):
-        if target.active:
-            db.session.query(Address).filter(and_(Address.user_id == target.user_id, Address.active == True)).update({"active": False })
+        db.session.query(Address).filter(and_(Address.user_id == target.user_id, Address.id != target.id)).update({"active": False })
 
 event.listen(Address, 'before_insert', Address.reset_users_active_addresses, retval=False)
 
