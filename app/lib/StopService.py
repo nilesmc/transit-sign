@@ -1,7 +1,7 @@
 import urllib, xmltodict
 from flask import current_app as app
 
-class TriMetStopService():
+class StopService():
 
   def __init__(self, location):
     # must be list of lat-long pair
@@ -28,7 +28,7 @@ class TriMetStopService():
     return "/ll/" + ','.join(str(loc) for loc in self.location)
 
   def meters_string(self):
-    return "/meters/100"
+    return "/meters/200"
 
 
 

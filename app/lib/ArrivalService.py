@@ -1,7 +1,7 @@
 import urllib, xmltodict
 from flask import current_app as app
 
-class TriMetArrivalService():
+class ArrivalService():
 
   def __init__(self, locations):
     # must be list of locations
