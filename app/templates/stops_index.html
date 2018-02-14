@@ -3,7 +3,12 @@
 
 {% block app_content %}
 
-    {% for stop in current_user.stops %}
+    <h1>Active Address</h1>
+    {% include '_address.html' %}
+
+    <h1>Current Stops</h1>
+
+    {% for stop in address.stops: %}
         {% include '_stop.html' %}
     {% endfor %}
 

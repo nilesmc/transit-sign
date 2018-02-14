@@ -5,15 +5,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from hashlib import md5
 import jwt
 from time import time
+from .lib import ArrivalService
 from .lib import GeoCodingService
+from .lib import StopService
 from sqlalchemy import event, and_, not_
+from sqlalchemy.orm import relationship
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    stops = db.relationship('Stop', backref='user', lazy='dynamic')
     addresses = db.relationship('Address', backref='user', lazy='dynamic', order_by="desc(Address.active)")
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -49,20 +51,31 @@ class User(UserMixin, db.Model):
 def load_user(id):
     return User.query.get(int(id))
 
+address_stops = db.Table('address_stops',
+    db.Column('address_id', db.Integer, db.ForeignKey('address.id')),
+    db.Column('stop_id', db.Integer, db.ForeignKey('stop.id'))
+)
+
 class Stop(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    stop_id = db.Column(db.Integer)
+    stop_id = db.Column(db.Integer, index=True, unique=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    latitude = db.Column(db.Float(Precision=64), primary_key=True)
+    longitude = db.Column(db.Float(Precision=64), primary_key=True)
+    address = db.Column(db.String(512))
+    direction = db.Column(db.String(128))
     active = db.Column(db.Boolean, default=True)
-    # - Lines
-    # - Bus / Train
-    # - Lat
-    # - Long
-    # - Direction
+
+    addresses = relationship("Address",
+                    secondary=address_stops,
+                    back_populates="stops")
 
     def __repr__(self):
         return '<Stop {}>'.format(self.stop_id)
+
+    def map_name_param(self):
+        str = f"map_{self.stop_id}"
+        return str
 
 class Address(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -75,6 +88,10 @@ class Address(db.Model):
     longitude = db.Column(db.Float(Precision=64), primary_key=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    stops = relationship("Stop",
+                secondary=address_stops,
+                back_populates="addresses")
 
     def __repr__(self):
         return '<Address {}>'.format(self.street_address)
@@ -93,11 +110,40 @@ class Address(db.Model):
         self.latitude = coordinates['latitude']
         self.longitude = coordinates['longitude']
 
+    def get_stops(self):
+        stops = StopService.StopService(self.coordinates()).get_stops()
+        new_stops = []
+        for stop in stops:
+            stop_check = db.session.query(Stop).filter(Stop.stop_id == stop['id']).first()
+            if not stop_check:
+                new_stop = Stop(
+                    stop_id=stop['id'],
+                    address=stop['address'],
+                    latitude=stop['latitude'],
+                    longitude=stop['longitude'],
+                    direction=stop['direction']
+                )
+                new_stops.append(new_stop)
+        db.session.add_all(new_stops)
+        db.session.commit()
+        self.add_stops(stops)
+
+    def add_stops(self, stops):
+        stop_ids = [stop['id'] for stop in stops if 'id' in stop]
+        new_stops = db.session.query(Stop).filter(Stop.stop_id.in_(stop_ids)).all()
+        self.stops.extend(new_stops)
+        db.session.commit()
+
+    def coordinates(self):
+        coordinates =  [
+                self.longitude,
+                self.latitude
+            ]
+        return coordinates
+
     @staticmethod
     def reset_users_active_addresses(mapper, connection, target):
         db.session.query(Address).filter(and_(Address.user_id == target.user_id, Address.id != target.id)).update({"active": False })
 
 event.listen(Address, 'before_insert', Address.reset_users_active_addresses, retval=False)
-
 event.listen(Address, 'before_update', Address.reset_users_active_addresses, retval=False)
-

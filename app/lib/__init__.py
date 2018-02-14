@@ -1,5 +1,5 @@
 # from flask import Blueprint
 
-# bp = Blueprint('trimetservice', __name__)
+# bp = Blueprint('arrivalservice', __name__)
 
-# from app.trimetservice import TriMetService
+# from app.arrivalservice import TriMetService

@@ -8,7 +8,8 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from config import Config
-from .lib import TriMetService as TMS
+from .lib import ArrivalService
+from .lib import StopService
 from .lib import GeoCodingService
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail

@@ -42,7 +42,8 @@ class EditProfileForm(FlaskForm):
                 raise ValidationError('Please use a different username, last one is taken.')
 
 class StopForm(FlaskForm):
-    stop = IntegerField(validators=[DataRequired()])
+    stop_id = IntegerField('TriMet Stop ID', validators=[DataRequired()])
+    active = BooleanField("Active Address", validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class AddressForm(FlaskForm):

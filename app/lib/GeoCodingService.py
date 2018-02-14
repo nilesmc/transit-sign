@@ -29,6 +29,3 @@ class GeoCodingService():
 
   def location_string(self):
     return "address=" + self.location
-
-
-

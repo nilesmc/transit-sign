@@ -1,9 +1,9 @@
 from app import app, db
 from flask import render_template, flash, redirect, request, url_for
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, AddressForm, \
-    ResetPasswordRequestForm, ResetPasswordForm
+    ResetPasswordRequestForm, ResetPasswordForm, StopForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Address
+from app.models import User, Address, Stop
 from datetime import datetime
 from app.email import send_password_reset_email
 from flask_googlemaps import GoogleMaps, Map
@@ -158,5 +158,27 @@ def edit_address(address_id):
 @app.route('/stops', methods=['GET', 'POST'])
 @login_required
 def stops_index():
-    return render_template('stops_index.html', title='Stops')
+    active_address = db.session.query(Address).filter(Address.user_id == current_user.id).first()
+    # consider moving this as callback for Address
+    active_address.get_stops()
+    return render_template('stops_index.html', title='Stops', address=active_address)
 
+@app.route('/stops/<stop_id>', methods=['GET', 'POST'])
+@login_required
+def edit_stop(stop_id):
+    stop = db.session.query(Stop).filter(Stop.id == stop_id).first()
+    form = StopForm()
+
+    if form.validate_on_submit():
+        db.session.query(Stop).filter(Stop.id == stop.id).update({Stop.active: form.active.data, Stop.stop_id: form.id.data
+        })
+        # Stop.get_arrivals()
+        db.session.commit()
+
+        flash('Your stop has been updated!')
+        return redirect(url_for('stop_index'))
+    elif request.method == 'GET':
+        form.active.data = stop.active
+        form.stop_id.data = stop.stop_id
+
+    return render_template('edit_stop.html', title='Edit Stop', form=form)

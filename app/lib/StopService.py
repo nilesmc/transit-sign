@@ -6,10 +6,21 @@ class StopService():
   def __init__(self, location):
     # must be list of lat-long pair
     self.location = location
-    self.tri_met_app_id = '493D5A3B7A49079255995D6A8'
+    self.tri_met_app_id = app.config['TRI_MET_APP_ID']
 
-  def run(self):
-    return self.request
+  def get_stops(self):
+    raw_stops = self.request()['resultSet']['location']
+    stops = []
+    for stop in raw_stops:
+      stops.append({
+        'id': stop['@locid'],
+        'address': stop['@desc'] ,
+        'latitude': stop['@lat'],
+        'longitude': stop['@lng'],
+        'direction': stop['@dir']
+       })
+
+    return stops
 
   def request(self):
     response = urllib.request.urlopen(self.request_url())
@@ -29,6 +40,3 @@ class StopService():
 
   def meters_string(self):
     return "/meters/200"
-
-
-
