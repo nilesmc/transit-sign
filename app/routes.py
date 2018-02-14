@@ -19,11 +19,11 @@ def before_request():
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    return render_template('index.html', title='Home')
+    return render_template('pages/index.html', title='Home')
 
 @app.route('/about', methods=['GET'])
 def about():
-    return render_template('about.html', title='About')
+    return render_template('pages/about.html', title='About')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -40,7 +40,7 @@ def login():
         if not next_page or not next_page.startswith('/'):
             next_page = url_for('index')
         return redirect(next_page)
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('user/login.html', title='Sign In', form=form)
 
 @app.route('/logout')
 def logout():
@@ -59,7 +59,7 @@ def register():
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('user/register.html', title='Register', form=form)
 
 
 # Login Required
@@ -71,7 +71,7 @@ def user(username):
         {'stop_id': '1234', 'next_arrival_time': '1pm'},
         {'stop_id': '5432', 'next_arrival_time': '1am'}
     ]
-    return render_template('user.html', user=user, stops=stops)
+    return render_template('user/user.html', user=user, stops=stops)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -84,7 +84,7 @@ def edit_profile():
         return redirect(url_for('edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
-    return render_template('edit_profile.html', title='Edit Profile',
+    return render_template('user/edit_profile.html', title='Edit Profile',
                            form=form)
 # Password Management
 @app.route('/reset_password_request', methods=['GET', 'POST'])
@@ -98,7 +98,7 @@ def reset_password_request():
             send_password_reset_email(user)
         flash('Check your email for the instructions to reset your password')
         return redirect(url_for('login'))
-    return render_template('reset_password_request.html',
+    return render_template('user/reset_password_request.html',
                            title='Reset Password', form=form)
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -114,7 +114,7 @@ def reset_password(token):
         db.session.commit()
         flash('Your password has been reset.')
         return redirect(url_for('login'))
-    return render_template('reset_password.html', form=form)
+    return render_template('user/reset_password.html', form=form)
 
 # ADDRESS ROUTES #
 @app.route('/address', methods=['GET', 'POST'])
@@ -129,7 +129,7 @@ def address_index():
         db.session.commit()
         flash('Your address has been added!')
         return redirect(url_for('address_index'))
-    return render_template('addresses_index.html', title='Addresses', form=form)
+    return render_template('addresses/addresses_index.html', title='Addresses', form=form)
 
 @app.route('/address/<address_id>', methods=['GET', 'POST'])
 @login_required
@@ -151,7 +151,7 @@ def edit_address(address_id):
         form.city.data = address.city
         form.state.data = address.state
         form.zip_code.data = address.zip_code
-    return render_template('edit_address.html', title='Edit Address', form=form)
+    return render_template('addresses/edit_address.html', title='Edit Address', form=form)
 
 
 # STOP ROUTES #
@@ -161,7 +161,7 @@ def stops_index():
     active_address = db.session.query(Address).filter(Address.user_id == current_user.id).first()
     # consider moving this as callback for Address
     active_address.get_stops()
-    return render_template('stops_index.html', title='Stops', address=active_address)
+    return render_template('stops/stops_index.html', title='Stops', address=active_address)
 
 @app.route('/stops/<stop_id>', methods=['GET', 'POST'])
 @login_required
@@ -181,4 +181,4 @@ def edit_stop(stop_id):
         form.active.data = stop.active
         form.stop_id.data = stop.stop_id
 
-    return render_template('edit_stop.html', title='Edit Stop', form=form)
+    return render_template('stops/edit_stop.html', title='Edit Stop', form=form)
