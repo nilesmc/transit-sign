@@ -8,8 +8,12 @@
 
     <h1>Current Stops</h1>
 
-    {% for stop in address.stops: %}
-        {% include '_stop.html' %}
-    {% endfor %}
+    {% if address.stops %}
+      {% for stop in address.stops: %}
+          {% include '_stop.html' %}
+      {% endfor %}
+    {% else %}
+      <h4>This Address does not have any available stops in the service area</h4>
+    {% endif %}
 
 {% endblock %}

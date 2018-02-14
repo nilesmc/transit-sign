@@ -7,8 +7,14 @@
        {{ wtf.quick_form(form) }}
     {% endif %}
 
+
     <h1>Current Address</h1>
-    {% for address in current_user.addresses %}
-      {% include '_address.html' %}
-    {% endfor %}
+
+    {% if current_user.addresses%}
+      {% for address in current_user.addresses %}
+        {% include '_address.html' %}
+      {% endfor %}
+    {% else %}
+      <h4>You do not current have any addresses, please add one.</h4>
+    {% endif %}
 {% endblock %}

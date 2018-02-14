@@ -9,7 +9,12 @@ class StopService():
     self.tri_met_app_id = app.config['TRI_MET_APP_ID']
 
   def get_stops(self):
-    raw_stops = self.request()['resultSet']['location']
+    raw_stops = self.request()
+
+    if raw_stops.get('resultSet') is None or raw_stops['resultSet'].get('location') is None : return
+    else:
+      raw_stops = self.request()['resultSet']['location']
+
     stops = []
     for stop in raw_stops:
       stops.append({

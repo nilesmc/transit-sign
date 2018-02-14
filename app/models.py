@@ -112,6 +112,7 @@ class Address(db.Model):
 
     def get_stops(self):
         stops = StopService.StopService(self.coordinates()).get_stops()
+        if stops is None : return
         new_stops = []
         for stop in stops:
             stop_check = db.session.query(Stop).filter(Stop.stop_id == stop['id']).first()
