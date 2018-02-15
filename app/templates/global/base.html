@@ -56,4 +56,8 @@
 {% block scripts %}
     {{ super() }}
     {{ moment.include_moment() }}
+    {% assets "home_js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
 {% endblock %}

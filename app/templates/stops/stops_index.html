@@ -13,7 +13,7 @@
     {% if address.stops %}
       {% if address.stops %}
           <br><br>
-          <a href="#">Get Arrivals</a>
+          <a class='meow' href='#'>Get Arrivals</a>
       {% endif %}
       {% for stop in address.stops: %}
           {% include 'global/_stop.html' %}
@@ -22,4 +22,19 @@
       <h4>This Address does not have any available stops in the service area</h4>
     {% endif %}
 
+{% block scripts %}
+<script type=text/javascript>
+
+console.log('===LOADED JS ====== ');
+$(function() {
+    console.log('===LOADED JS ====== ');
+
+    $('a.meow').bind('click', function() {
+      console.log('meow');
+    });
+  });
+
+</script>
 {% endblock %}
+{% endblock %}
+

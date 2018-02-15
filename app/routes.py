@@ -165,7 +165,7 @@ def stops_index():
 @app.route('/arrivals', methods=['GET', 'POST'])
 @login_required
 def arrivals():
-    active_address = db.session.query(Address).filter(Address.user_id == current_user.id, Address.active == True).first()
+    active_address = current_user.addresses.first()
 
     stop_arrivals = list(map(lambda stop:stop.arrivals(), active_address.stops))
 
