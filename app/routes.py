@@ -7,6 +7,7 @@ from app.models import User, Address, Stop
 from datetime import datetime
 from app.email import send_password_reset_email
 from flask_googlemaps import GoogleMaps, Map
+from flask import jsonify
 
 # USER ROUTES #
 @app.before_request
@@ -67,11 +68,8 @@ def register():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    stops = [
-        {'stop_id': '1234', 'next_arrival_time': '1pm'},
-        {'stop_id': '5432', 'next_arrival_time': '1am'}
-    ]
-    return render_template('user/user.html', user=user, stops=stops)
+
+    return render_template('user/user.html', user=user)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -158,10 +156,20 @@ def edit_address(address_id):
 @app.route('/stops', methods=['GET', 'POST'])
 @login_required
 def stops_index():
-    active_address = db.session.query(Address).filter(Address.user_id == current_user.id).first()
+    active_address = db.session.query(Address).filter(Address.user_id == current_user.id, Address.active == True).first()
     # consider moving this as callback for Address
     active_address.get_stops()
+
     return render_template('stops/stops_index.html', title='Stops', address=active_address)
+
+@app.route('/arrivals', methods=['GET', 'POST'])
+@login_required
+def arrivals():
+    active_address = db.session.query(Address).filter(Address.user_id == current_user.id, Address.active == True).first()
+
+    stop_arrivals = list(map(lambda stop:stop.arrivals(), active_address.stops))
+
+    return jsonify({'arrivals': stop_arrivals })
 
 @app.route('/stops/<stop_id>', methods=['GET', 'POST'])
 @login_required

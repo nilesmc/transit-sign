@@ -11,6 +11,10 @@
     <h1>Current Stops</h1>
 
     {% if address.stops %}
+      {% if address.stops %}
+          <br><br>
+          <a href="#">Get Arrivals</a>
+      {% endif %}
       {% for stop in address.stops: %}
           {% include 'global/_stop.html' %}
       {% endfor %}

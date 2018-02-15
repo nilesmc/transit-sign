@@ -14,6 +14,7 @@ from .lib import GeoCodingService
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_googlemaps import GoogleMaps
+from flask_moment import Moment
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -21,6 +22,7 @@ bootstrap = Bootstrap(app)
 CSRFProtect(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+moment = Moment(app)
 login = LoginManager(app)
 login.login_view = 'login'
 mail = Mail(app)

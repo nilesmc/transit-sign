@@ -6,6 +6,7 @@ click==6.7
 decorator==4.2.1
 dominate==2.3.1
 Flask==0.12.2
+Flask-Assets==0.12
 Flask-Bootstrap==3.3.7.1
 Flask-GoogleMaps==0.2.5
 Flask-Login==0.4.1
@@ -35,6 +36,7 @@ SQLAlchemy==1.2.0
 untangle==1.1.1
 urllib3==1.22
 visitor==0.1.3
+webassets==0.12.1
 Werkzeug==0.13
 WTForms==2.1
 xmltodict==0.11.0

@@ -8,9 +8,14 @@ class ArrivalService():
     self.locations = locations
     self.tri_met_app_id = app.config['TRI_MET_APP_ID']
 
-  def run(self):
-    # munge data into usable form here
-    return self.request
+  def get_arrivals(self):
+    raw_arrivals = self.request()
+
+    if raw_arrivals.get('resultSet') is None or raw_arrivals['resultSet'].get('arrival') is None : return
+    else:
+      arrivals = self.request()['resultSet']['arrival']
+
+    return arrivals
 
   def request(self):
     response = urllib.request.urlopen(self.request_url())

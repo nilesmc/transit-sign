@@ -77,6 +77,27 @@ class Stop(db.Model):
         str = f"map_{self.stop_id}"
         return str
 
+    def get_arrivals(self):
+        arrivals = ArrivalService.ArrivalService([self.stop_id]).get_arrivals()
+
+        return arrivals
+
+    def arrivals(self):
+        raw_arrivals = self.get_arrivals()
+        arrivals = []
+
+        for arrival in raw_arrivals:
+          eta = arrival.get('@estimated') or arrival.get('@scheduled')
+          arrivals.append({
+            'description': arrival['@fullSign'],
+            'eta': datetime.fromtimestamp(float(eta)/1000),
+            'now': datetime.now(),
+            'stop_id': arrival['@locid']
+           })
+
+        return arrivals
+
+
 class Address(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     active = db.Column(db.Boolean, default=True)

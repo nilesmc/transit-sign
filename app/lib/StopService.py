@@ -19,7 +19,7 @@ class StopService():
     for stop in raw_stops:
       stops.append({
         'id': stop['@locid'],
-        'address': stop['@desc'] ,
+        'address': stop['@desc'],
         'latitude': stop['@lat'],
         'longitude': stop['@lng'],
         'direction': stop['@dir']

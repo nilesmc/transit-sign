@@ -16,7 +16,7 @@
         </tr>
     </table>
     <hr>
-    {% for stop in stops %}
+    {% for stop in current_user.addresses.first().stops %}
         {% include 'global/_stop.html' %}
     {% endfor %}
 {% endblock %}

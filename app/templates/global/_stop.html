@@ -1,16 +1,28 @@
 {% if stop.id %}
 
+  <h2>Stop ID: {{stop.stop_id}} </h2>
   <a href="{{ url_for('edit_stop', stop_id=stop.id) }}">
     <table>
         <tr valign="top">
             <td width="300px">
               {{ googlemap(stop.map_name_param(), lat=stop.latitude, lng=stop.longitude, markers=[(stop.latitude, stop.longitude)] )}}
             </td>
-            <td> Active?: True </td>
-            <td> {{ stop.latitude, stop.longitude }}  </td>
-            <td>{{stop['address']}}</td>
+            <td> Active?: {{ stop.active }} </td>
+            <td>{{ stop.latitude, stop.longitude }}  </td>
+            <td>{{ stop['address']}}</td>
+
         </tr>
     </table>
   </a>
+
+  {% if stop.active %}
+    <ul>
+      {% for arrival in stop.arrivals() %}
+        {% include 'global/_arrival.html' %}
+      {% endfor %}
+    </ul>
+  {% else %}
+      <h4>You do not stops, please activate one.</h4>
+  {% endif %}
 
 {% endif %}
