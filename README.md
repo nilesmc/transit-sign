@@ -5,6 +5,10 @@ times for the most frequently used transit stop you use at your home.
 
 I'll be using Python 3, Flask 0.12.2, and my Raspberry Pi.
 
+You can see a live version of this app on heroku:
+
+[Transit ∿](https://transit-sign.herokuapp.com/)
+
 
 To start the application:
 
