@@ -22,19 +22,5 @@
       <h4>This Address does not have any available stops in the service area</h4>
     {% endif %}
 
-{% block scripts %}
-<script type=text/javascript>
-
-console.log('===LOADED JS ====== ');
-$(function() {
-    console.log('===LOADED JS ====== ');
-
-    $('a.meow').bind('click', function() {
-      console.log('meow');
-    });
-  });
-
-</script>
-{% endblock %}
 {% endblock %}
 
