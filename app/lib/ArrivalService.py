@@ -9,28 +9,31 @@ class ArrivalService():
     self.tri_met_app_id = app.config['TRI_MET_APP_ID']
 
   def get_arrivals(self):
-    raw_arrivals = self.request()
+    return self._groom_arrivals(self._request())
 
-    if raw_arrivals.get('resultSet') is None or raw_arrivals['resultSet'].get('arrival') is None : return
-    else:
-      arrivals = self.request()['resultSet']['arrival']
+  def _groom_arrivals(self, raw_arrivals):
+    if not(self._arrivals_results_not_none(raw_arrivals)) :
+      return raw_arrivals['resultSet']['arrival']
 
-    return arrivals
+  def _arrivals_results_not_none(self, arrivals_data):
+      return (arrivals_data.get('resultSet') is None or arrivals_data['resultSet'].get('arrival') is None)
 
-  def request(self):
-    response = urllib.request.urlopen(self.request_url())
+  def _request(self):
+    response = urllib.request.urlopen(self._request_url())
     # Trimet API returns XML
     data = xmltodict.parse(response.read())
     return data
 
-  def request_url(self):
-    trimet_root =  "https://developer.trimet.org/ws/V1/arrivals"
-    return trimet_root  + self.locations_string() + self.app_id_string()
+  def _request_url(self):
+    return self._root_url()  + self._locations_string() + self._app_id_string()
 
-  def app_id_string(self):
+  def _root_url(self):
+    return "https://developer.trimet.org/ws/V1/arrivals"
+
+  def _app_id_string(self):
     return "&appID="+ self.tri_met_app_id
 
-  def locations_string(self):
+  def _locations_string(self):
     return "?locIDs=" + ','.join(str(loc) for loc in self.locations)
 
 
