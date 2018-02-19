@@ -21,8 +21,7 @@ class ArrivalService():
   def _request(self):
     response = urllib.request.urlopen(self._request_url())
     # Trimet API returns XML
-    data = xmltodict.parse(response.read())
-    return data
+    return xmltodict.parse(response.read())
 
   def _request_url(self):
     return self._root_url()  + self._locations_string() + self._app_id_string()

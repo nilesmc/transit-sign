@@ -3,18 +3,20 @@ from flask import current_app as app
 
 class StopService():
 
-  def __init__(self, location):
+  def __init__(self, location, distance='200'):
     # must be list of lat-long pair
     self.location = location
+    self.distance = distance
     self.tri_met_app_id = app.config['TRI_MET_APP_ID']
 
   def get_stops(self):
-    raw_stops = self.request()
+    raw_stops = self._request()
 
     if raw_stops.get('resultSet') is None or raw_stops['resultSet'].get('location') is None : return
     else:
-      raw_stops = self.request()['resultSet']['location']
+      raw_stops = raw_stops['resultSet']['location']
 
+    # move this onto the stop model
     stops = []
     for stop in raw_stops:
       stops.append({
@@ -27,21 +29,22 @@ class StopService():
 
     return stops
 
-  def request(self):
-    response = urllib.request.urlopen(self.request_url())
+  def _request(self):
+    response = urllib.request.urlopen(self._request_url())
     # Trimet API returns XML
-    data = xmltodict.parse(response.read())
-    return data
+    return xmltodict.parse(response.read())
 
-  def request_url(self):
-    trimet_root =  "https://developer.trimet.org/ws/V1/stops"
-    return trimet_root  + self.location_string() + self.meters_string() + self.app_id_string()
+  def _request_url(self):
+    return self._root_url()  + self._location_string() + self._meters_string() + self._app_id_string()
 
-  def app_id_string(self):
+  def _root_url(self):
+    return "https://developer.trimet.org/ws/V1/stops"
+
+  def _app_id_string(self):
     return "&appID="+ self.tri_met_app_id
 
-  def location_string(self):
+  def _location_string(self):
     return "/ll/" + ','.join(str(loc) for loc in self.location)
 
-  def meters_string(self):
-    return "/meters/200"
+  def _meters_string(self):
+    return "/meters/" + self.distance
