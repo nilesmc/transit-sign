@@ -7,7 +7,6 @@ dotenv_path = join(basedir, '.env')
 load_dotenv(dotenv_path)
 
 class Config(object):
-    # PSQL/SQL Alchemy Database Config
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
@@ -36,7 +35,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/dev_transit-sign'
 
+
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/test_transit-sign'
-    SECRET_KEY = 'this-really-needs-to-be-changed'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL')
+    USE_RELOADER = False

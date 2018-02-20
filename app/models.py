@@ -17,7 +17,11 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    addresses = db.relationship('Address', backref='user', lazy='dynamic', order_by="desc(Address.active)")
+    addresses = db.relationship('Address',
+        backref='user',
+        lazy='dynamic',
+        order_by="desc(Address.active)"
+    )
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -52,10 +56,16 @@ class User(UserMixin, db.Model):
 def load_user(id):
     return User.query.get(int(id))
 
-address_stops = db.Table('address_stops',
-    db.Column('address_id', db.Integer, db.ForeignKey('address.id')),
-    db.Column('stop_id', db.Integer, db.ForeignKey('stop.id'))
-)
+# address_stops = db.Table('address_stops',
+#     db.Column('address_id', db.Integer, db.ForeignKey('address.id'),  primary_key=True),
+#     db.Column('stop_id', db.Integer, db.ForeignKey('stop.id'),  primary_key=True)
+# )
+
+# class AddressStops(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     address_id = db.Column(db.Integer, db.ForeignKey('address.id')),
+#     stop_id =  db.Column(db.Integer, db.ForeignKey('stop.id'))
+#     active = db.Column(db.Boolean, default=True)
 
 class Stop(db.Model):
     id = db.Column(db.Integer, primary_key=True)

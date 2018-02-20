@@ -29,7 +29,7 @@ gmaps = GoogleMaps()
 assets = flask_assets.Environment()
 
 def create_app(config_class=Config):
-    print('Start Create APP')
+
     app = Flask(__name__)
     app.config.from_object(config_class)
 
