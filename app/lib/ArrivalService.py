@@ -11,6 +11,7 @@ class ArrivalService():
   def get_arrivals(self):
     return self._groom_arrivals(self._request())
 
+  # make the next two methods a parse class
   def _groom_arrivals(self, raw_arrivals):
     if not(self._arrivals_results_not_none(raw_arrivals)) :
       return raw_arrivals['resultSet']['arrival']
