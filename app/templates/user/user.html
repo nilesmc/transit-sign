@@ -8,9 +8,9 @@
                 <h1>Hi, {{ current_user.username }}!</h1>
                 {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
                 {% if user == current_user %}
-                    <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
-                    <p><a href="{{ url_for('address_index') }}">View Your Addresses</a></p>
-                    <p><a href="{{ url_for('stops_index') }}">View Your Stops</a></p>
+                    <p><a href="{{ url_for('user.edit_profile') }}">Edit your profile</a></p>
+                    <p><a href="{{ url_for('addresses.index') }}">View Your Addresses</a></p>
+                    <p><a href="{{ url_for('stops.index') }}">View Your Stops</a></p>
                 {% endif %}
             </td>
         </tr>
@@ -22,5 +22,5 @@
 {% endblock %}
 
 {% if user == current_user %}
-    <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
+    <p><a href="{{ url_for('user.edit_profile') }}">Edit your profile</a></p>
 {% endif %}

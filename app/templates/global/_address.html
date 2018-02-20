@@ -1,6 +1,6 @@
 {% if address.id %}
 
-  <a href="{{ url_for('edit_address', address_id=address.id) }}">
+  <a href="{{ url_for('addresses.edit', address_id=address.id) }}">
     <table>
         <tr valign="top">
             <td width="300px">

@@ -1,14 +1,15 @@
 from app import db
+from app.addresses import bp
 from flask import render_template, flash, redirect, request, url_for
-from app.forms import AddressForm
+from app.addresses.forms import AddressForm
 from flask_login import current_user, login_required
 from app.models import User, Address, Stop
 from datetime import datetime
 from flask_googlemaps import GoogleMaps, Map
 
-@bp.route('/address', methods=['GET', 'POST'])
+@bp.route('/addresses', methods=['GET', 'POST'])
 @login_required
-def address_index():
+def index():
     form = AddressForm()
 
     if form.validate_on_submit():
@@ -17,12 +18,12 @@ def address_index():
         address.get_coordinates()
         db.session.commit()
         flash('Your address has been added!')
-        return redirect(url_for('address_index'))
+        return redirect(url_for('addresses.index'))
     return render_template('addresses/index.html', title='Addresses', form=form)
 
-@bp.route('/address/<address_id>', methods=['GET', 'POST'])
+@bp.route('/addresses/<address_id>', methods=['GET', 'POST'])
 @login_required
-def edit_address(address_id):
+def edit(address_id):
     address = db.session.query(Address).filter(Address.id == address_id).first()
     form = AddressForm()
 
@@ -33,7 +34,7 @@ def edit_address(address_id):
         db.session.commit()
 
         flash('Your address has been updated!')
-        return redirect(url_for('address_index'))
+        return redirect(url_for('addresses.index'))
     elif request.method == 'GET':
         form.active.data = address.active
         form.street_address.data = address.street_address

@@ -1,5 +1,5 @@
-from flask_assets import Bundle, Environment
-from app import app
+from flask_assets import Bundle
+from app import assets
 
 bundles = {
 
@@ -9,6 +9,6 @@ bundles = {
 
 }
 
-assets = Environment(app)
+# assets = Environment(app)
 
 assets.register(bundles)

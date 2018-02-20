@@ -1,4 +1,5 @@
 from app import db
+from app.arrivals import bp
 from flask import request
 from flask_login import current_user, login_required
 from app.models import User, Address, Stop

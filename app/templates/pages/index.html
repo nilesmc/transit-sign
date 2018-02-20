@@ -8,8 +8,13 @@
           <h1>Welcome to Transit∿</h1>
           <p>Helping people connect with transit when leaving home. <a href="http://trimet.org/">TriMet</a> arrival times you can glance at on your way out the front door.</p>
           <p>
-            <a class="btn btn-lg btn-default" role="button"
-               href="{{ url_for('register') }}"">Sign Up</a>
+            {% if current_user.is_anonymous %}
+              <a class="btn btn-lg btn-default" role="button"
+                 href="{{ url_for('auth.register') }}"">Sign Up</a>
+            {% else %}
+              <a class="btn btn-lg btn-default" role="button"
+                href="{{ url_for('user.user', username=current_user.username) }}">Your Profile</a></li>
+            {% endif %}
           </p>
         </div>
       </div>

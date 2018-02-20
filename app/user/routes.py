@@ -1,6 +1,7 @@
 from app import db
+from app.user import bp
 from flask import render_template, flash, redirect, request, url_for
-from app.forms import EditProfileForm
+from app.user.forms import EditProfileForm
 from flask_login import current_user, login_required
 from app.models import User
 from datetime import datetime

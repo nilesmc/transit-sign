@@ -1,6 +1,7 @@
 from app import db
+from app.stops import bp
 from flask import render_template, flash, redirect, request, url_for
-from app.forms import StopForm
+from app.stops.forms import StopForm
 from flask_login import current_user, login_required
 from app.models import Address, Stop
 from datetime import datetime
@@ -14,7 +15,7 @@ def before_request():
 
 @bp.route('/stops', methods=['GET', 'POST'])
 @login_required
-def stops_index():
+def index():
     active_address = db.session.query(Address).filter(Address.user_id == current_user.id, Address.active == True).first()
     # consider moving this as callback for Address
     active_address.get_stops()
@@ -23,7 +24,7 @@ def stops_index():
 
 @bp.route('/stops/<stop_id>', methods=['GET', 'POST'])
 @login_required
-def edit_stop(stop_id):
+def edit(stop_id):
     stop = db.session.query(Stop).filter(Stop.id == stop_id).first()
     form = StopForm()
 
