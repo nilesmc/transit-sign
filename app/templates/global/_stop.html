@@ -2,17 +2,17 @@
 
   <h2>Stop ID: {{stop.stop_id}} </h2>
   <a href="{{ url_for('stops.edit', stop_id=stop.id) }}">
-    <table>
-        <tr valign="top">
-            <td width="300px">
+    <div class='container'>
+        <div class='row' valign="top">
+            <div width="300px">
               {{ googlemap(stop.map_name_param(), lat=stop.latitude, lng=stop.longitude, markers=[(stop.latitude, stop.longitude)] )}}
-            </td>
-            <td> Active?: {{ stop.active }} </td>
-            <td>{{ stop.latitude, stop.longitude }}  </td>
-            <td>{{ stop['address']}}</td>
+            </div>
+            <p> Active?: {{ stop.active }} </p>
+            <p>{{ stop.latitude, stop.longitude }}  </p>
+            <p>{{ stop['address']}}</p>
 
-        </tr>
-    </table>
+        </div class='row'>
+    </div>
   </a>
 
   {% if stop.active %}
