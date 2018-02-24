@@ -5,7 +5,7 @@ bundles = {
 
     'home_js': Bundle(
         'js/transit-sign.js',
-        output='gen/home.js'),
+        output='public/js/home.js'),
 
     'common_css': Bundle(
       'styles/layout.scss',
@@ -14,7 +14,5 @@ bundles = {
     )
 
 }
-
-# assets = Environment(app)
 
 assets.register(bundles)
