@@ -13,6 +13,7 @@ from mock import patch
 
 class UserModelCase(unittest.TestCase):
     def setUp(self):
+        print("DEM TESTS STARTED")
         self.app = create_app(TestingConfig())
         print(self.app.config['SQLALCHEMY_DATABASE_URI'])
         # self.client = self.app.test_client()
@@ -120,5 +121,5 @@ class UserModelCase(unittest.TestCase):
 #     content = "Some content"
 
 
-# if __name__ == '__main__':
-#     unittest.main(verbosity=2)
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

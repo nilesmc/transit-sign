@@ -10,7 +10,7 @@ You can see a live version of this app on heroku:
 [Transit ∿](https://transit-sign.herokuapp.com/)
 
 
-To start the application:
+To start the application in your local dev environment:
 
 - python3 -m venv venv
 - virtualenv -p python3 venv
@@ -23,3 +23,4 @@ To start the application:
 
 To run the tests:
 
+- python tests.py

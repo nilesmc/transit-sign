@@ -57,8 +57,8 @@ def load_user(id):
     return User.query.get(int(id))
 
 address_stops = db.Table('address_stops',
-    db.Column('address_id', db.Integer, db.ForeignKey('address.id'),  primary_key=True),
-    db.Column('stop_id', db.Integer, db.ForeignKey('stop.id'),  primary_key=True)
+    db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
+    db.Column('stop_id', db.Integer, db.ForeignKey('stop.id'), primary_key=True)
 )
 
 # class AddressStops(db.Model):
