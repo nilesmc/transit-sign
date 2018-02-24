@@ -6,6 +6,7 @@
     <h1>Your Stops</h1>
 
     <h2>Stops are for your current Active Address</h1>
+
     {% include 'global/_address.html' %}
 
     <h1>Current Stops</h1>
@@ -13,7 +14,7 @@
     {% if address.stops %}
       {% if address.stops %}
           <br><br>
-          <a class='meow' href='#'>Get Arrivals</a>
+          <button class='meow' href='#'>Get Arrivals</button>
       {% endif %}
       {% for stop in address.stops: %}
           {% include 'global/_stop.html' %}
