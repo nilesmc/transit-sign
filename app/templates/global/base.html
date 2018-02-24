@@ -9,35 +9,7 @@
 {% endblock %}
 
 {% block navbar %}
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for('pages.index') }}">Transit∿</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('pages.index') }}">Home</a></li>
-                    <li><a href="{{ url_for('pages.about') }}">About</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    {% if current_user.is_anonymous %}
-                        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('user.user', username=current_user.username) }}">Profile</a></li>
-                        <li><a href="{{ url_for('addresses.index') }}">Addresses</a></li>
-                        <li><a href="{{ url_for('stops.index') }}">Arrivals</a></li>
-                        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+   {% include 'global/_nav.html' %}
 {% endblock %}
 
 {% block content %}
@@ -54,59 +26,7 @@
         {% block app_content %}{% endblock %}
     </div>
     {% block footer %}
-      <footer style='background: #f8f8f8; padding-top: 12px;''>
-          <div class="container">
-            <div class="row">
-              <div class="col-md-3 col-sm-6">
-                <div class="footer">
-                  <h4>Service Areas</h4>
-                  <address>
-                    <ul class="list-unstyled">
-                        <li>Portland Metro, OR</li>
-                    </ul>
-                  </address>
-                </div>
-              </div>
-
-              <div class="col-md-3 col-sm-6">
-                <div class="footer">
-                  <h4>Transit Partners</h4>
-                  <ul class="list-unstyled">
-                    <li><a href="https://www.trimet.org">TriMet</a></li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="col-md-3 col-sm-6">
-                <div class="footer">
-                  <h4>Source Code</h4>
-                  <ul class="list-unstyled">
-                    <li><a href="https://github.com/nilesvm/transit-sign">GitHub</a></li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="col-md-3 col-sm-6">
-                <div class="footer">
-                  <h4>Pages</h4>
-                  <ul class="list-unstyled">
-                    <li><a href="#">Signup</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Home</a></li>
-                  </ul>
-                </div>
-              </div>
-
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-xs-12">
-              <p class="text-xs-center"><a href="http://www.mcgiver.io">&copy; 2018 McGiver.io</a></p>
-            </div>
-          </div>
-        </div>
-      </footer>
+       {% include 'global/_footer.html' %}
     {% endblock footer%}
 {% endblock %}
 
