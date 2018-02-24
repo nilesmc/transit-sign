@@ -1,28 +1,30 @@
 {% if stop.id %}
 
-  <h2>Stop ID: {{stop.stop_id}} </h2>
-  <a href="{{ url_for('stops.edit', stop_id=stop.id) }}">
-    <div class='container'>
-        <div class='row' valign="top">
-            <div width="300px">
-              {{ googlemap(stop.map_name_param(), lat=stop.latitude, lng=stop.longitude, markers=[(stop.latitude, stop.longitude)] )}}
-            </div>
-            <p> Active?: {{ stop.active }} </p>
-            <p>{{ stop.latitude, stop.longitude }}  </p>
-            <p>{{ stop['address']}}</p>
-
-        </div class='row'>
+<div class='container'>
+    <div>
+        <div width="300px">
+          {{ googlemap(stop.map_name_param(), lat=stop.latitude, lng=stop.longitude, markers=[(stop.latitude, stop.longitude)] )}}
+        </div>
     </div>
-  </a>
-
-  {% if stop.active %}
-    <ul>
-      {% for arrival in stop.arrivals() %}
-        {% include 'global/_arrival.html' %}
-      {% endfor %}
-    </ul>
-  {% else %}
-      <h4>You do not stops, please activate one.</h4>
-  {% endif %}
+    <div>
+      <a href="{{ url_for('stops.edit', stop_id=stop.id) }}">
+        <h4>Stop Details: {{stop.stop_id}} </h4>
+      </a>
+      <div>
+          <p> Active?: {{ stop.active }}</p>
+          <p> Address: {{ stop['address']}}</p>
+      </div>
+      {% if stop.active %}
+        <h5>Upcoming Arrivals</h5>
+        <ul>
+          {% for arrival in stop.arrivals() %}
+            {% include 'global/_arrival.html' %}
+          {% endfor %}
+        </ul>
+      {% else %}
+          <h4>You do not stops, please activate one.</h4>
+      {% endif %}
+    </div>
+</div>
 
 {% endif %}
