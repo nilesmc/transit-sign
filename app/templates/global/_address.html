@@ -1,16 +1,16 @@
 {% if address.id %}
 
-  <a href="{{ url_for('addresses.edit', address_id=address.id) }}">
-    <table>
-        <tr valign="top">
-            <td width="300px">
-              {{ googlemap(address.map_name_param(), lat=address.latitude, lng=address.longitude,  markers=[(address.latitude, address.longitude)] )}}
-            </td>
-            <td> Active? :{{  address.active}} </td>
-            <td> {{ address.latitude }} - {{ address.longitude }}  </td>
-            <td>{{address.street_address}} - {{address.city}}, {{address.state}}, {{address.zip_code}}</td>
-        </tr>
-    </table>
-  </a>
+
+<div class='container'>
+    <div valign="top">
+        <td width="300px">
+          {{ googlemap(address.map_name_param(), lat=address.latitude, lng=address.longitude,  markers=[(address.latitude, address.longitude)] )}}
+        </td>
+        <a href="{{ url_for('addresses.edit', address_id=address.id) }}">Edit Address</a>
+        <p> Active? :{{  address.active}} </p>
+        <p>{{address.street_address}} - {{address.city}}, {{address.state}}, {{address.zip_code}}</p>
+    </div>
+</div>
+
 
 {% endif %}

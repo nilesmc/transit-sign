@@ -1,5 +1,9 @@
 {% extends 'bootstrap/base.html' %}
 
+{% assets "common_css" %}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
+{% endassets %}
+
 {% block title %}
     {% if title %}
         {{ title }} - Transit∿
@@ -9,35 +13,7 @@
 {% endblock %}
 
 {% block navbar %}
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for('pages.index') }}">Transit∿</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('pages.index') }}">Home</a></li>
-                    <li><a href="{{ url_for('pages.about') }}">About</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    {% if current_user.is_anonymous %}
-                        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('user.user', username=current_user.username) }}">Profile</a></li>
-                        <li><a href="{{ url_for('addresses.index') }}">Addresses</a></li>
-                        <li><a href="{{ url_for('stops.index') }}">Arrivals</a></li>
-                        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+   {% include 'global/_nav.html' %}
 {% endblock %}
 
 {% block content %}
@@ -53,7 +29,11 @@
         {# application content needs to be provided in the app_content block #}
         {% block app_content %}{% endblock %}
     </div>
+    {% block footer %}
+       {% include 'global/_footer.html' %}
+    {% endblock footer%}
 {% endblock %}
+
 
 {% block scripts %}
     {{ super() }}
