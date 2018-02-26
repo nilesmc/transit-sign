@@ -56,30 +56,33 @@ class User(UserMixin, db.Model):
 def load_user(id):
     return User.query.get(int(id))
 
-address_stops = db.Table('address_stops',
-    db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True),
-    db.Column('stop_id', db.Integer, db.ForeignKey('stop.id'), primary_key=True)
-)
+class AddressStops(db.Model):
+    __tablename__ = 'address_stops'
+    address_id = db.Column('address_id', db.Integer, db.ForeignKey('address.id'), primary_key=True)
+    stop_id = db.Column('stop_id', db.Integer, db.ForeignKey('stop.id'), primary_key=True)
+    address = db.relationship('Address', backref=db.backref('address_stop'))
+    stop =  db.relationship('Stop', backref=db.backref('address_stop'))
+    active = db.Column(db.Boolean, default=True)
 
-# class AddressStops(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     address_id = db.Column(db.Integer, db.ForeignKey('address.id')),
-#     stop_id =  db.Column(db.Integer, db.ForeignKey('stop.id'))
-#     active = db.Column(db.Boolean, default=True)
+    def __init__(self, stop=None, address=None):
+        self.stop = stop
+        self.address = address
+
 
 class Stop(db.Model):
+    __tablename__ = 'stop'
     id = db.Column(db.Integer, primary_key=True)
     stop_id = db.Column(db.Integer, index=True, unique=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    latitude = db.Column(db.Float(Precision=64), primary_key=True)
-    longitude = db.Column(db.Float(Precision=64), primary_key=True)
+    latitude = db.Column(db.Float(Precision=64), index=True)
+    longitude = db.Column(db.Float(Precision=64), index=True)
     address = db.Column(db.String(512))
     direction = db.Column(db.String(128))
     active = db.Column(db.Boolean, default=True)
 
-    addresses = relationship("Address",
-                    secondary=address_stops,
-                    back_populates="stops")
+    addresses = db.relationship('Address',
+                secondary='address_stops',
+                back_populates="stops")
 
     def __repr__(self):
         return '<Stop {}>'.format(self.stop_id)
@@ -112,20 +115,22 @@ class Stop(db.Model):
 
 
 class Address(db.Model):
+    __tablename__ = 'address'
     id = db.Column(db.Integer, primary_key=True)
     active = db.Column(db.Boolean, default=True)
     street_address = db.Column(db.String(512))
     city = db.Column(db.String(256), index=True)
     state = db.Column(db.String(2))
     zip_code = db.Column(db.String(16))
-    latitude = db.Column(db.Float(Precision=64), primary_key=True)
-    longitude = db.Column(db.Float(Precision=64), primary_key=True)
+    latitude = db.Column(db.Float(Precision=64), index=True)
+    longitude = db.Column(db.Float(Precision=64), index=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    stops = relationship("Stop",
-                secondary=address_stops,
+    stops = db.relationship('Stop',
+                secondary='address_stops',
                 back_populates="addresses")
+
 
     def __repr__(self):
         return '<Address {}>'.format(self.street_address)

@@ -7,16 +7,9 @@ from config import Config, TestingConfig
 
 from mock import patch
 
-# can I call config directly here?
-# class TestingConfig(Config):
-#     TESTING = True
-
 class UserModelCase(unittest.TestCase):
     def setUp(self):
-        print("DEM TESTS STARTED")
         self.app = create_app(TestingConfig())
-        print(self.app.config['SQLALCHEMY_DATABASE_URI'])
-        # self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
