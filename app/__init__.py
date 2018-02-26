@@ -11,9 +11,9 @@ from flask_googlemaps import GoogleMaps
 from flask_moment import Moment
 from flask_wtf.csrf import CSRFProtect
 import flask_assets
-from .lib import ArrivalService
-from .lib import StopService
-from .lib import GeoCodingService
+from app.lib import ArrivalService
+from app.lib import GeoCodingService
+from app.lib import StopService
 from config import Config
 
 app = Flask(__name__)

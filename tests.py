@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 import unittest
 from app import create_app, db
-from app.models import User, Address, Stop
+from app.models import AddressStops, Address, Stop, User
 from config import Config, TestingConfig
 
 from mock import patch

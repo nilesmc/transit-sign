@@ -1,5 +1,5 @@
 from app import create_app, db, cli
-from app.models import Address, User, Stop
+from app.models import Address, AddressStops, User, Stop
 
 app = create_app()
 cli.register(app)
